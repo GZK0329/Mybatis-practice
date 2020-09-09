@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="db.properties"></properties>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${pwd}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+         <!--方法一 -->
+        <!--<mapper resource="com\gzk\dao\UserMapper.xml"/>-->
+        
+        <!--方法二接口和配置文件要同名且在同一个包下-->
+        <mapper class="com.gzk.dao.UserMapper"/>
+
+        <!--方法三接口和配置文件要同名且在同一个包下-->
+        <!--<package name="com.gzk.dao"/>-->
+        
+    </mappers>
+</configuration>

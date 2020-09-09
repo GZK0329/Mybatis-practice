@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzk.dao.EmployeeMapper">
+    <select id="getEmployeeById" parameterType="java.lang.String" resultMap="employeeById">
+        select m.id ,m.name mName, e.name eName, e.id eid,e.startTime
+        from employee e,manager m
+        <where>
+            <if test="_parameter != null">
+                and e.mid = m.id
+            </if>
+            <if test="_parameter != null">
+                and e.id = #{id}
+            </if>
+        </where>
+    </select>
+    <resultMap id="employeeById" type="com.gzk.pojo.Employee">
+        <result column="eid" property="eid"/>
+        <result column="eName" property="name"/>
+        <result column="startTime" property="startTime"/>
+
+        <!--<result property="manager" column="mid" javaType="com.gzk.pojo.Manager"/>-->
+        <association property="manager" column="mid" javaType="com.gzk.pojo.Manager">
+            <result property="name" column="mName"/>
+            <!--column名称要和上面的别名一一对应-->
+        </association>
+
+    </resultMap>
+</mapper>

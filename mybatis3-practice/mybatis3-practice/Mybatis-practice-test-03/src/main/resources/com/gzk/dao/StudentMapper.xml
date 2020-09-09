@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.gzk.dao.StudentMapper">
+
+    <!--子查询  先查询所有学生信息然后按tid去找对应老师-->
+   <select id="selectAllStudent" resultMap="studentTeacher" >
+       select * from student;
+   </select>
+    <resultMap id="studentTeacher" type="com.gzk.pojo.Student" >
+        <id property="sid" column="sid"/>
+        <result property="name" column="name"/>
+        <association property="teacher" column="tid" javaType="com.gzk.pojo.Teacher" select="teacher"/>
+    </resultMap>
+
+    <select id="teacher" resultType="com.gzk.pojo.Teacher" >
+        select * from teacher where tid = #{tid};
+    </select>
+    
+
+
+    <!--方法二 按结果嵌套查询-->
+    <select id="selectAllStudent2" resultMap="studentTeacher2">
+        select s.sid sid ,s.name sname, t.name tname
+        from student s, teacher t
+        where s.tid = t.tid;
+    </select>
+    <resultMap id="studentTeacher2" type="com.gzk.pojo.Student">
+        <id property="sid" column="sid"/>
+        <result property="name" column="sname"/>
+        <association property="teacher" column="tid" javaType="com.gzk.pojo.Teacher">
+            <result property="name" column="tname"/>
+        </association>
+    </resultMap>
+</mapper>
